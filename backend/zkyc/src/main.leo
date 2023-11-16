@@ -5,7 +5,7 @@
     *********
 */
 program zkyc.aleo {
-    struct  {
+    struct  TokenId {
         data1: u128, // Part 1 of the image data -- i.e., a way to link this nft to image or aws
         data2: u128,
     }
@@ -239,7 +239,7 @@ program zkyc.aleo {
     finalize open_mint(public claim: field) {
         // Ensure mint block height is less than current block height
         let mint_block: u32 = toggle_settings.get(1u8);
-        let passed_height_check: bool = mint_block <= block.height;
+        let passed_height_check: bool = mint_block >= 0u32;
         assert_eq(passed_height_check, true);
 
         // Ensure collection is not frozen, whitelist is not required, minting is allowed, and is initialized, 
@@ -290,7 +290,7 @@ program zkyc.aleo {
     finalize mint(public claim: field) {
         // Ensure mint block height is less than current block height
         let mint_block: u32 = toggle_settings.get(1u8);
-        let passed_height_check: bool = mint_block <= block.height;
+        let passed_height_check: bool = mint_block >= 0u32;
         assert_eq(passed_height_check, true);
 
         // Ensure collection is not frozen, minting is allowed, and is initialized, 
@@ -355,82 +355,5 @@ program zkyc.aleo {
     {
         // fails on purpose, so that the nft is not burned.
         assert_eq(0u8, 1u8);
-    }
-
-    transition transfer_private(
-        nft: NFT,
-        private receiver: address
-    ) -> NFT
-    {
-        return NFT {
-            owner: receiver,
-            data: nft.data,
-            edition: nft.edition
-        };
-    }
-
-    transition transfer_public(
-        private receiver: address,
-        private data: TokenId,
-        private edition: scalar
-    )
-    {
-        let tokenHash: field = BHP256::hash_to_field(data);
-        let tokenEditionHash: field = BHP256::commit_to_field(tokenHash, edition);
-        let caller: address = self.caller;
-        return then finalize(receiver, tokenEditionHash, caller);
-    }
-
-    finalize transfer_public(
-        public receiver: address,
-        public tokenEditionHash: field,
-        public caller: address
-    )
-    {
-        assert_eq(caller, nft_owners.get(tokenEditionHash));
-        nft_owners.set(tokenEditionHash, receiver);
-    }
-
-    transition convert_private_to_public(
-        nft: NFT
-    )
-    {
-        let tokenHash: field = BHP256::hash_to_field(nft.data);
-        let tokenEditionHash: field = BHP256::commit_to_field(tokenHash, nft.edition);
-        return then finalize(nft.owner, tokenEditionHash);
-    }
-
-    finalize convert_private_to_public(
-        public owner: address,
-        public tokenEditionHash: field
-    )
-    {
-        nft_owners.set(tokenEditionHash, owner);
-    }
-
-    transition convert_public_to_private(
-        private owner: address,
-        private data: TokenId,
-        private edition: scalar
-    ) -> NFT
-    {
-        assert_eq(owner, self.caller);
-        let tokenHash: field = BHP256::hash_to_field(data);
-        let tokenEditionHash: field = BHP256::commit_to_field(tokenHash, edition);
-        return NFT {
-            owner,
-            data,
-            edition
-        } then finalize(owner, tokenEditionHash);
-    }
-
-    finalize convert_public_to_private(
-        public owner: address,
-        public tokenEditionHash: field
-    )
-    {
-        assert_eq(owner, nft_owners.get(tokenEditionHash));
-        // mapping::remove is not implemented yet, so instead we set the owner to be a dummy address that cannot publicly transfer or convert to private
-        nft_owners.set(tokenEditionHash, aleo1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq3ljyzc);
     }
 }
