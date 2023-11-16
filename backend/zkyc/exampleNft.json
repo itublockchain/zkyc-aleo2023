@@ -1,0 +1,32 @@
+{
+    "name": "zKyc",
+    "image": "https://lime-leading-snipe-738.mypinata.cloud/ipfs/QmTrY3NGMgT7ysuZX2wRCtBbqVRDHBRjkwnFpvzE13P8BE/photo.jpg",
+    "date": "timestamp",
+    "attributes": [
+        {
+          "trait_type": "address",
+          "value": "0x1234567890123456789012345678901234567890"
+        },
+        {
+           "trait_type": "email",
+           "value": "true || false" // without quotes
+         },
+        {
+         "trait_type": "phoneNumber",
+            "value": "true || false" // without quotes
+        },
+         {
+            "trait_type": "kyc",
+            "value": "true || false" // without quotes
+         },
+         {
+            "trait_type": "over18",
+            "value": "true || false" // without quotes
+         }
+    ],
+    "mintNumber": 1,
+    "collectionLink": "localhost zkyc",
+    "collectionName": "zKYC",
+    "collectionDescription": "enables users can secure their kyc and prove to the apps that require kyc that they have been verified by a trusted source.",
+    "sourceLink": "localhost zkyc"
+  }
