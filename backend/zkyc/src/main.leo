@@ -32,7 +32,7 @@ program zkyc.aleo {
         private owner: address,
         private amount: u8,
     }
-
+//TODO: CONTROL THIS
     record NFT_claim {
         private owner: address,
         private claim: field
@@ -89,7 +89,7 @@ program zkyc.aleo {
         let is_initialized: u32 = toggle_settings_status & 1u32;
         assert_eq(is_initialized, 0u32);
 
-        general_settings.set(0u8, 0u128); // number of mintable NFTs (all editions)
+        general_settings.set(0u8, 1u128); // number of mintable NFTs (all editions)
         general_settings.set(1u8, total); // Number of total NFTs (first-editions) that can be minted
         general_settings.set(2u8, symbol); // Symbol for the NFT
         general_settings.set(3u8, base_uri.data0); // Base URI for NFT
@@ -132,7 +132,7 @@ program zkyc.aleo {
         nfts_to_mint.set(mintable_num, tokenEditionHash);
         general_settings.set(0u8, mintable_num + 1u128);
     }
-
+    //TODO: LET THE MINTER ONLY CAN MINT SPESIFIC NFT THAT WE ALLOWS HIM TO MINT
     transition add_minter(private minter: address, public amount: u8) -> NFT_mint {
         assert_eq(self.caller, aleo1gy3d0s00s2k7rmgqznnx2q8htmjm2p5rk8q40u5yklqhe44utvys0dmzdy);
         return NFT_mint {
@@ -151,27 +151,6 @@ program zkyc.aleo {
         assert_eq(is_initialized_and_not_frozen, 1u32);
     }
 
-    // call this function to toggle minting, the whitelist requirement, or to permanently freeze the contract
-    transition update_toggle_settings(public toggle_settings_bitstring: u32) {
-        assert_eq(self.caller, aleo1gy3d0s00s2k7rmgqznnx2q8htmjm2p5rk8q40u5yklqhe44utvys0dmzdy);
-        return then finalize(toggle_settings_bitstring);
-    }
-
-    finalize update_toggle_settings(public toggle_settings_bitstring: u32) {
-        // Ensure collection is initialized and not frozen.
-        let toggle_settings_status: u32 = toggle_settings.get(0u8);
-        // initialized & frozen flags = 0b0000...1001 = 9u32
-        // what the settings should be = 0b0000...0001 = 1u32
-        let is_initialized_and_not_frozen: u32 = toggle_settings_status & 9u32;
-        assert_eq(is_initialized_and_not_frozen, 1u32);
-
-        // Ensure updated settings are not uninitializing the collection.
-        let still_initialized: u32 = toggle_settings_bitstring & 1u32;
-        assert_eq(still_initialized, 1u32);
-
-        toggle_settings.set(0u8, toggle_settings_bitstring);
-    }
-
     transition set_mint_block(public mint_block: u32) {
         assert_eq(self.caller, aleo1gy3d0s00s2k7rmgqznnx2q8htmjm2p5rk8q40u5yklqhe44utvys0dmzdy);
         return then finalize(mint_block);
@@ -188,21 +167,6 @@ program zkyc.aleo {
         toggle_settings.set(1u8, mint_block);
     }
 
-    transition update_symbol(public symbol: u128) {
-        assert_eq(self.caller, aleo1gy3d0s00s2k7rmgqznnx2q8htmjm2p5rk8q40u5yklqhe44utvys0dmzdy);
-        return then finalize(symbol);
-    }
-
-    finalize update_symbol(public symbol: u128) {
-        // Ensure collection is initialized and not frozen.
-        let toggle_settings_status: u32 = toggle_settings.get(0u8);
-        // initialized & frozen flags = 0b0000...1001 = 9u32
-        // what the settings should be = 0b0000...0001 = 1u32
-        let is_initialized_and_not_frozen: u32 = toggle_settings_status & 9u32;
-        assert_eq(is_initialized_and_not_frozen, 1u32);
-
-        general_settings.set(2u8, symbol);
-    }
 
     transition update_base_uri(public base_uri: BaseURI) {
         assert_eq(self.caller, aleo1gy3d0s00s2k7rmgqznnx2q8htmjm2p5rk8q40u5yklqhe44utvys0dmzdy);
@@ -222,7 +186,7 @@ program zkyc.aleo {
         general_settings.set(5u8, base_uri.data2);
         general_settings.set(6u8, base_uri.data3);
     }
-
+    // TODO: delete the input. provide random hiding nonce and store it in a mapping to access later.
     transition open_mint(private hiding_nonce: scalar) -> NFT_claim {
         // CAUTION: If the minter selects the same hiding nonce,
         // that minter will not be able to mint all of their NFTs without claiming some first.
@@ -254,6 +218,7 @@ program zkyc.aleo {
         assert_eq(existing_claim, 0field);
 
         // Randomly select an NFT to mint
+        // TODO: DO NOT MAKE IT RANDOM
         let randomNum: u128 = ChaCha::rand_u128();
         let old_mintable_sum: u128 = general_settings.get_or_use(0u8, 0u128);
         let randomIndex: u128 = randomNum % old_mintable_sum;
