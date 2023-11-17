@@ -1,4 +1,9 @@
 // The program input for zkyc/src/main.leo
 [main]
-public a: u32 = 1u32;
-b: u32 = 2u32;
+public identification_number: u8 = 1u8;
+public first_name: field = 12field;
+public second_name: field = 1123field;
+public last_name: field = 1323field;
+public birth_date: u8 = 1124field;
+public country: field = 14124field;
+public city: field = 1412412field;
