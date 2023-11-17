@@ -8,11 +8,11 @@ program zkyc.aleo {
     
 
     struct KycInfo {
-        identification_number: u8,
+        identification_number: u128,
         first_name: field,
         second_name: field,
         last_name: field,
-        birth_date: field,
+        birth_timestamp: u128,
         country: field,
         city: field,
     }
@@ -22,40 +22,43 @@ program zkyc.aleo {
     }
 
     struct PhoneInfo {
-        phone_number: u8,
+        phone_number: field,
     }
 
     struct AddressInfo {
         country: field,
         city: field,
         street: field,
-        street_number: u8,
-        postal_code: u8,
+        street_number: u128,
+        postal_code: u128,
     }
 
     record kyc {
         owner: address,
-        kyc_info: KycInfo,
-        mail_info: MailInfo,
-        phone_info: PhoneInfo,
-        address_info: AddressInfo,
-
+        kyc_hash: field,
     }
     mapping kycs: address => bool;
-    mapping hash: address => field;
+    mapping kyc_hash_map: address => field;
+
+    function calculate_kyc_hash(
+        first_name: field,
+        second_name: field,
+        last_name: field,
+        country: field,
+        city: field,
+    ) -> field {
+        return BHP256::hash_to_field(first_name+second_name+last_name+country+city);
+    }
 
     transition main(
-        private identification_number: u8,
+        private identification_number: u128,
         private first_name: field,
         private second_name: field,
         private last_name: field,
-        private birth_date: field,
+        private birth_timestamp: u128,
         private country: field,
         private city: field,
-        // private mail_info: MailInfo,
-        // private phone_info: PhoneInfo,
-        // private address_info: AddressInfo,
-        // private owner: address,
+
     )-> KycInfo {
         let owner:address = self.caller;
         let kyc_info: KycInfo = KycInfo {
@@ -63,42 +66,25 @@ program zkyc.aleo {
             first_name,
             second_name,
             last_name,
-            birth_date,
+            birth_timestamp,
             country,
             city,
         };
-        // sum the first name + city and hash with bhp256
-        let address_hash: field = BHP256::hash_to_field(aleo13quw5mswjlr02vfc64slavc848ed6ceku4ah50jmwj74myj5vurq4h9wnu);
-        let kyc_hash: field = BHP256::hash_to_field(address_hash+1field);
+        let kyc_hash: field = calculate_kyc_hash(first_name,second_name,last_name,country,city);
         return then finalize(kyc_info,owner, kyc_hash);
     }
 
      finalize main(
         public kyc_info: KycInfo,
-    //     public mail_info: MailInfo,
-    //     public phone_info: PhoneInfo,
-    //     public address_info: AddressInfo,
+
         public owner: address,
         public kyc_hash: field,
     ) {
         Mapping::set(kycs, owner, true);
-        Mapping::set(hash, aleo13quw5mswjlr02vfc64slavc848ed6ceku4ah50jmwj74myj5vurq4h9wnu, kyc_hash);
-    //     let a: kyc = kyc {
-    //         owner: owner,
-    //         kyc_info,
-    //         mail_info,
-    //         phone_info,
-    //         address_info,
-    //     };
+        Mapping::set(kyc_hash_map, owner, kyc_hash);
+
     }
-    transition  check_kyc(){
-        return then finalize();
-    }
-    finalize check_kyc() {
-        let address_hash: field = BHP256::hash_to_field(aleo13quw5mswjlr02vfc64slavc848ed6ceku4ah50jmwj74myj5vurq4h9wnu);
-        let kyc_hash: field = BHP256::hash_to_field(address_hash+1field);
-        assert_eq(kyc_hash, hash.get(aleo13quw5mswjlr02vfc64slavc848ed6ceku4ah50jmwj74myj5vurq4h9wnu));
-    }
+  
     // TODO: CONTROL FUNCTION HAVE TO BE ADDED
 
 }
