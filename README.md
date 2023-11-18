@@ -16,6 +16,7 @@ Our project integrates two essential services for its functionality:
 
 - We used the Swift SDK to develop our mobile app. Users first log into their Aleo wallet within the zKyc mobile app.
 - After successful login, users can verify their identity through various methods, such as government-issued ID checks, producing proofs if the details are correct.
+- We utilizies Apple KeyChain to safely create signatures, and prove them later.
 - Users can also generate new proofs using web2 services verification (e.g., GitHub, Twitter).
 - These verification processes are optional and user-selected.
 
