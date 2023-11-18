@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Web App</title>
+    <!-- Include the Firebase initialization script -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js" defer></script>
+</head>
+
+<body>
+
+    <button onclick="twitterSignin()">Twitter Signin</button>
+    <button onclick="twitterSignout()">Twitter Signout</button>
+
+    <script type="module">
+        // Your Firebase configuration
+        import initializeApp from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js';
+        const firebaseConfig = {
+//very secret
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const providerTwitter = new firebase.auth.TwitterAuthProvider();
+        const auth = firebase.auth();
+
+        function twitterSignin() {
+            auth.signInWithPopup(providerTwitter)
+                .then(function (result) {
+                    var token = result.credential?.accessToken;
+                    var user = result.user;
+
+                    console.log(token);
+                    console.log(user);
+                })
+                .catch(function (error) {
+                    console.log(error.code);
+                    console.log(error.message);
+                });
+        }
+
+        function twitterSignout() {
+            auth.signOut()
+                .then(function () {
+                    console.log('Signout successful!');
+                })
+                .catch(function (error) {
+                    console.log('Signout failed!');
+                });
+        }
+    </script>
+</body>
+
+</html>

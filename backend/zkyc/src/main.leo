@@ -13,7 +13,7 @@ program zkyc.aleo {
         data4: bool, // phone
         data5: bool, // kyc
         data6: bool, // over18
-        data7: bool, // address
+        data7: bool, // github
         data8: bool, // twitter
     }
 
@@ -68,6 +68,14 @@ program zkyc.aleo {
         data5: u128,
     }
 
+    struct GithubInfo{
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
+    }
+
     record KYC {
         private owner: address,
         private data: KycInfo,
@@ -86,6 +94,11 @@ program zkyc.aleo {
     record Twitter {
         private owner: address,
         private data: TwitterInfo,
+    }
+
+    record Github {
+        private owner: address,
+        private data: GithubInfo,
     }
 
 
@@ -116,6 +129,7 @@ program zkyc.aleo {
     mapping emailMap: address => bool;
     mapping over18Map: address => bool;
     mapping twitterMap: address => bool;
+    mapping githubMap: address => bool;
 
     // keys: setting index
     // values: setting value
@@ -421,6 +435,30 @@ program zkyc.aleo {
         public owner: address,
     ) {
         Mapping::set(twitterMap, owner, true);
+    }
+
+    transition github_make(
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
+
+    )-> Github {
+        let github_sign: GithubInfo = GithubInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
+        };
+        return Github {owner: owner, data: github_sign} then finalize(owner);
+    }
+    finalize github_make(
+        public owner: address,
+    ) {
+        Mapping::set(githubMap, owner, true);
     }
 
     // Proof that you own an nft without revealing the nft.

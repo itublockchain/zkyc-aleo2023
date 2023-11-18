@@ -14,6 +14,9 @@ const App = () => {
   const [publicKey, setPublicKey] = useState(null);
   const [idInput, setIdInput] = useState(null);
   const [birthTimestampInput, setBirthTimestampInput] = useState(null);
+  const [phoneInput, setPhoneInput] = useState(null);
+  const [emailInput, setEmailInput] = useState(null);
+  
 
   const Hash = async (data) => {
     const executionResponse = await programManager.run(hashProgram, "hash", [`${data}`]);
@@ -75,7 +78,7 @@ const App = () => {
   }
   const wrapPhoneVerify = async () => {
     let phoneHash = await phoneHashFunc();
-    let phoneVerify = await Hash(`${idInput, birthTimestampInput}`);
+    let phoneVerify = await Hash(`${phoneInput, phoneInput}`);
     console.log(phoneVerify);
     if (phoneHash == phoneVerify) {
       console.log("phone verified");
