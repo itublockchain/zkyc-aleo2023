@@ -135,7 +135,7 @@ finalize initialize_collection:
     set r2.data1 into general_settings[4u8];
     set r2.data2 into general_settings[5u8];
     set r2.data3 into general_settings[6u8];
-    set 5u32 into toggle_settings[0u8];
+    set 7u32 into toggle_settings[0u8];
     set 0u32 into toggle_settings[1u8];
 
 
@@ -227,7 +227,7 @@ finalize open_mint:
     assert.eq r4 true;
     get toggle_settings[0u8] into r5;
     and r5 15u32 into r6;
-    assert.eq r6 3u32;
+    assert.eq r6 7u32;
     get.or_use claims_to_nfts[r0] 0field into r7;
     assert.eq r7 0field;
     get nfts_to_mint[r2] into r8;
