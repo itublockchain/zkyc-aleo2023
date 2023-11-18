@@ -13,7 +13,8 @@ program zkyc.aleo {
         data4: bool, // phone
         data5: bool, // kyc
         data6: bool, // over18
-        data7: bool, // address
+        data7: bool, // github
+        data8: bool, // twitter
     }
 
     // base uri ascii bits. Include as many data pieces as necessary to encapsulate the uri. Padded with 0s at the end.
@@ -25,34 +26,54 @@ program zkyc.aleo {
     }
 
     struct EmailInfo {
-        user: address,
-        email_hash: field,
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
     }
 
     struct KycInfo {
-         identification_number: u128,
-         first_name: field,
-         second_name: field,
-         last_name: field,
-         birth_timestamp: u128,
-         country: field,
-         city: field,
-         kyc_hash: field,
+        
+         
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
+
     }
 
     struct PhoneInfo {
-        user: address,
-        phone_number: u128,
-        phone_hash: field,
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
     }
 
     struct AddressInfo {
-        user: address,
-        country: field,
-        city: field,
-        street: field,
-        street_number: u128,
-        postal_code: u128,
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
+    }
+
+    struct TwitterInfo{
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
+    }
+
+    struct GithubInfo{
+        data1: u128,
+        data2: u128,
+        data3: u128,
+        data4: u128,
+        data5: u128,
     }
 
     record KYC {
@@ -70,6 +91,17 @@ program zkyc.aleo {
         private data: EmailInfo,
     }
 
+    record Twitter {
+        private owner: address,
+        private data: TwitterInfo,
+    }
+
+    record Github {
+        private owner: address,
+        private data: GithubInfo,
+    }
+
+
     record NFT {
         private owner: address,
         private data: TokenId,
@@ -80,7 +112,6 @@ program zkyc.aleo {
         private owner: address,
         private amount: u8,
     }
-//TODO: CONTROL THIS
     record NFT_claim {
         private owner: address,
         private claim: field
@@ -97,10 +128,13 @@ program zkyc.aleo {
     mapping phoneMap: address => bool;
     mapping emailMap: address => bool;
     mapping over18Map: address => bool;
+    mapping twitterMap: address => bool;
+    mapping githubMap: address => bool;
 
     // keys: setting index
     // values: setting value
     mapping general_settings: u8 => u128;
+    
 
     // keys: index of the nft to mint
     // values: hash of the token id + edition
@@ -152,7 +186,7 @@ program zkyc.aleo {
         // frozen flag = 0b0000...1000 = 8u32
         // defaults -- not frozen, whitelist required, not minting, initialized
         // 0b0000...0101 = 5u32.
-        toggle_settings.set(0u8, 5u32);
+        toggle_settings.set(0u8, 7u32);
         toggle_settings.set(1u8, 0u32); // block height when mint is allowed
     }
     
@@ -182,7 +216,6 @@ program zkyc.aleo {
         nfts_to_mint.set(mintable_num, tokenEditionHash);
         general_settings.set(0u8, mintable_num + 1u128);
     }
-    //TODO: LET THE MINTER ONLY CAN MINT SPESIFIC NFT THAT WE ALLOWS HIM TO MINT
     transition add_minter(private minter: address, public amount: u8) -> NFT_mint {
         assert_eq(self.caller, aleo1tg9z522lmf8mhpu7vt957gpwn68pmdw6fdpyn8gfjsjrn5e7jqqs48upp7);
         return NFT_mint {
@@ -236,7 +269,6 @@ program zkyc.aleo {
         general_settings.set(5u8, base_uri.data2);
         general_settings.set(6u8, base_uri.data3);
     }
-    // TODO: delete the input. provide random hiding nonce and store it in a mapping to access later.
     transition open_mint(private hiding_nonce: scalar, private nftId: u128) -> NFT_claim {
         // CAUTION: If the minter selects the same hiding nonce,
         // that minter will not be able to mint all of their NFTs without claiming some first.
@@ -261,14 +293,13 @@ program zkyc.aleo {
         // frozen & whitelist & minting & initialized flags = 0b0000...1111 = 15u32
         // what the settings should be = 0b0000...0011 = 3u32
         let collection_settings_met: u32 = toggle_settings_status & 15u32;
-        assert_eq(collection_settings_met, 3u32);
+        assert_eq(collection_settings_met, 7u32);
 
         // Ensure this claim has not already been made
         let existing_claim: field = claims_to_nfts.get_or_use(claim, 0field);
         assert_eq(existing_claim, 0field);
 
         // Randomly select an NFT to mint
-        // TODO: DO NOT MAKE IT RANDOM
         let tokenEditionHash: field = nfts_to_mint.get(nftId);
         claims_to_nfts.set(claim, tokenEditionHash);
 
@@ -300,28 +331,24 @@ program zkyc.aleo {
      // MAIN PART OF zKYC
 
     transition kyc_make(
-        private identification_number: u128,
-        private birth_timestamp: u128,
-        private first_name: field,
-        private second_name: field,
-        private last_name: field,
-        private country: field,
-        private city: field,
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
+
 
     )-> KYC {
-        let owner:address = self.caller;
-        let kyc_hash: field = BHP256::hash_to_field(identification_number + birth_timestamp);
-        let kyc_info: KycInfo = KycInfo {
-            identification_number,
-            first_name,
-            second_name,
-            last_name,
-            birth_timestamp,
-            country,
-            city,
-            kyc_hash,
+        let kyc_hash: field = BHP256::hash_to_field(data1 + data2);
+        let kyc_sign: KycInfo = KycInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
         };
-        return KYC {owner: owner, data: kyc_info} then finalize(owner);
+        return KYC {owner: owner, data: kyc_sign} then finalize(owner);
     }
     finalize kyc_make(
         public owner: address,
@@ -329,34 +356,46 @@ program zkyc.aleo {
         Mapping::set(kycMap, owner, true);
     }
     transition phone_make(
-        private phone_number: u128,
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
     )-> Phone {
-        let owner:address = self.caller;
-        let phone_info: PhoneInfo = PhoneInfo {
-            user: owner,
-            phone_number,
-            phone_hash: BHP256::hash_to_field(phone_number + phone_number),
+        let phone_sign: PhoneInfo = PhoneInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
         };
-        return Phone {owner: owner, data: phone_info} then finalize(phone_info,owner);
+        return Phone {owner: owner, data: phone_sign} then finalize(owner);
     }
     finalize phone_make(
-        public phone_info: PhoneInfo,
         public owner: address,
     ) {
         Mapping::set(phoneMap, owner, true);
     }
     transition email_make(
-        private email: field,
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
+
     )-> Email {
-        let owner:address = self.caller;
-        let email_info: EmailInfo = EmailInfo {
-            user: owner,
-            email_hash: BHP256::hash_to_field(email),
+        let email_sign: EmailInfo = EmailInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
         };
-        return Email {owner: owner, data: email_info} then finalize(email_info,owner);
+        return Email {owner: owner, data: email_sign} then finalize(owner);
     }
     finalize email_make(
-        public email_info: EmailInfo,
         public owner: address,
     ) {
         Mapping::set(emailMap, owner, true);
@@ -373,29 +412,53 @@ program zkyc.aleo {
     ) {
         Mapping::set(over18Map, owner, over18);
     }
-    transition address_make(
-        private country: field,
-        private city: field,
-        private street: field,
-        private street_number: u128,
-        private postal_code: u128,
-    )-> AddressInfo {
-        let owner:address = self.caller;
-        let address_info: AddressInfo = AddressInfo {
-            user: owner,
-            country,
-            city,
-            street,
-            street_number,
-            postal_code,
+    
+    transition twitter_make(
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
+
+    )-> Twitter {
+        let twitter_sign: TwitterInfo = TwitterInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
         };
-        return then finalize(address_info,owner);
+        return Twitter {owner: owner, data: twitter_sign} then finalize(owner);
     }
-    finalize address_make(
-        public address_info: AddressInfo,
+    finalize twitter_make(
         public owner: address,
     ) {
-        Mapping::set(over18Map, owner, true);
+        Mapping::set(twitterMap, owner, true);
+    }
+
+    transition github_make(
+        private owner: address,
+        private data1: u128,
+        private data2: u128,
+        private data3: u128,
+        private data4: u128,
+        private data5: u128,
+
+    )-> Github {
+        let github_sign: GithubInfo = GithubInfo {
+            data1,
+            data2,
+            data3,
+            data4,
+            data5,
+        };
+        return Github {owner: owner, data: github_sign} then finalize(owner);
+    }
+    finalize github_make(
+        public owner: address,
+    ) {
+        Mapping::set(githubMap, owner, true);
     }
 
     // Proof that you own an nft without revealing the nft.

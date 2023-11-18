@@ -1,9 +1,10 @@
 // The program input for zkyc/src/main.leo
-[main]
-public identification_number: u128 = 1u128;
-public first_name: field = 12field;
-public second_name: field = 1123field;
-public last_name: field = 1323field;
-public birth_date: u128 = 12u128;
-public country: field = 14124field;
-public city: field = 1412412field;
+[initialize_collection]
+public total: u128 = 1000u128;
+public symbol: u128 = 1129925498u128;
+public base_uri: baseURI = {
+    data0: u128 = 140142428286237166329961436077156559212u128,
+    data1: u128 = 140142428286237166329961436077156559212u128,
+    data2: u128 = 140142428286237166329961436077156559212u128,
+    data3: u128 = 140142428286237166329961436077156559212u128,
+}
