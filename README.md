@@ -26,5 +26,12 @@ Our project integrates two essential services for its functionality:
 - Proofs generated in the zKyc mobile app are embedded into zkNFTs created using Demox Labs' infrastructure, making them ready for verification at any time.
 - We specifically designed these NFTs as soulbound to avoid the security risks associated with transferable NFTs.
 - For instance, a betting site wanting to verify a user's age can direct the user to the zKyc mobile app. The user generates a zk proof using personal knowledge, which, if matched with the NFT, verifies the user's age without exposing their identity to the betting service.
-
+- We are using firebase apis for login with twitter, github so we trying to bring web2 data's to the web3.
 In essence, the zKyc mobile app successfully addresses significant privacy concerns by providing a secure and private method of identity verification using the innovative technology of zkNFTs on the Aleo blockchain.
+
+### Example Transition Id
+- ZKYCLATEST.ALEO = at1qlryrtjg2vszywhjjr89j2rgwzdr3gh59rq8kmyxpsuhkerck5ysxm6le8
+- ADD_NFT = at1ewshe4ee60rxm3r20y8x4redyduwcv5vxrm0gp6qul47rugjxu9qwkfwkg
+- ADD_MINTER = at1wtk0tn23yxgsp08vrulww93ugp3982zswmwhd98uhau7kwc985fqpp7306
+- SET_MINT_BLOCK = at1dyetfe99h5mqzmqsf3z75s5dkehx8nvpvrk2uyn5zyxne2zgxu9qkqm5lz
+- OPEN_MINT = at1wujyh55tkhv99gm4mev9d4zj3a5hag4kl349xus655uj5setxvgsttnxhu
