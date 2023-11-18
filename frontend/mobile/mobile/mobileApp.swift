@@ -28,6 +28,7 @@ struct mobileApp: App {
             ContentView()
                 .environment(AleoManager())
                 .environment(LocalAuthenticator())
+                .environment(AccountData())
         }
         .modelContainer(sharedModelContainer)
     }

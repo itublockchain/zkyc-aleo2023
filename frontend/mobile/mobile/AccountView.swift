@@ -9,48 +9,48 @@ import SwiftUI
 
 import SwiftDate
 
+import SwiftUI
+import IGIdenticon
+
+
 struct AccountView: View {
+    @Environment(AccountData.self) var accountData
     
-    @Environment(AleoManager.self) var aleoManager
-    
-    var name = "Jon"
-    
-    var shareRequests: [ShareRequest] = [
-        ShareRequest(source: "Aetna", date: Date()),
-        ShareRequest(source: "Sun Life", date: Date()),
-        ShareRequest(source: "Manulife", date: Date()),
-        ShareRequest(source: "Blue Cross Blue Shield", date: Date())
-    ]
-    
-    @State var selectedRequest: ShareRequest?
+    let image = Identicon().icon(from: "string", size: CGSize(width: 100, height: 100))
+
     
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(shareRequests) { request in
-                    Button {
-                        selectedRequest = request
-                    } label: {
-                        Text("Request from \(request.source) at \(request.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    }
-                }
-                .onDelete(perform: deleteRequest)
-                .sheet(item: $selectedRequest) { request in
-                    RequestView(shareRequest: request)
-                }
-            }
-            .navigationTitle("Welcome \(name)!")
-            .onAppear {
-                aleoManager.generateAccount()
-            }
+        @Bindable var accountData = accountData
+        
+        VStack(spacing: 5.0){
+            Text("Your Aleo Account")
+                .font(.title)
+                .padding()
+            TextField("Enter your private key", text: $accountData.account.privateKey)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 300)
+                .border(accountData.account.privateKey.isEmpty ? .black : .accentColor)
+              .textFieldStyle(RoundedBorderTextFieldStyle())
+              .frame(width: 300)
+              .border(accountData.account.privateKey.isEmpty ? .black : .accentColor)
+              
+            TextField("Enter your view key", text: $accountData.account.viewKey)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 300)
+                .border(accountData.account.viewKey.isEmpty ? .black : .accentColor)
+            TextField("Enter your address", text: $accountData.account.address)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 300)
+                .border(accountData.account.address.isEmpty ? .black : .accentColor)
         }
     }
 }
 
+
 #Preview {
     AccountView()
-        .modelContainer(for: [HealthRecord.self, Diagnosis.self, Medication.self], inMemory: true)
         .environment(LocalAuthenticator())
         .environment(AleoManager())
+        .environment(AccountData())
 }
 

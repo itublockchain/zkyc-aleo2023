@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  mobileApp.swift
 //  mobile
 //
 //  Created by Muhittin Koybasi on 17.11.2023.
@@ -22,8 +22,9 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: [KYCRecord.self], inMemory: true)
+        .modelContainer(for: [KYCRecord.self, PhoneNumber.self, Email.self, TwitterAccount.self, GithubAccount.self], inMemory: true)
         .environment(LocalAuthenticator())
         .environment(AleoManager())
+        .environment(AccountData())
 
 }

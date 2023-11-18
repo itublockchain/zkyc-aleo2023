@@ -7,22 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6B73DF72B0826F600A31C9F /* KYCInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73DF62B0826F600A31C9F /* KYCInput.swift */; };
 		E6B73DF92B0827D700A31C9F /* MyDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73DF82B0827D700A31C9F /* MyDataView.swift */; };
-		E6B73DFB2B0827F500A31C9F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73DFA2B0827F500A31C9F /* HomeView.swift */; };
 		E6B73DFE2B0828C700A31C9F /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73DFD2B0828C700A31C9F /* SwiftDate */; };
 		E6B73E002B0828EE00A31C9F /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73DFF2B0828EE00A31C9F /* HealthRecord.swift */; };
 		E6B73E042B08295F00A31C9F /* SwiftCloud in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73E032B08295F00A31C9F /* SwiftCloud */; };
 		E6B73E072B082C8700A31C9F /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E062B082C8700A31C9F /* LocalAuthenticator.swift */; };
 		E6B73E092B082CAE00A31C9F /* AleoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E082B082CAE00A31C9F /* AleoManager.swift */; };
-		E6B73E0B2B082CC200A31C9F /* ShareRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E0A2B082CC200A31C9F /* ShareRequest.swift */; };
-		E6B73E0D2B082FE300A31C9F /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E0C2B082FE300A31C9F /* RequestView.swift */; };
 		E6B73E0F2B08300200A31C9F /* SignatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E0E2B08300200A31C9F /* SignatureView.swift */; };
 		E6B73E112B08301A00A31C9F /* Aleo in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73E102B08301A00A31C9F /* Aleo */; };
 		E6B73E142B08312E00A31C9F /* SimpleCodable in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73E132B08312E00A31C9F /* SimpleCodable */; };
 		E6B73E162B08312E00A31C9F /* SimpleCodableClient in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73E152B08312E00A31C9F /* SimpleCodableClient */; };
 		E6B73E182B08315E00A31C9F /* KYCRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E172B08315E00A31C9F /* KYCRecord.swift */; };
 		E6B73E1C2B08334700A31C9F /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E1B2B08334700A31C9F /* AccountView.swift */; };
+		E6B73E222B083E5700A31C9F /* IGIdenticon in Frameworks */ = {isa = PBXBuildFile; productRef = E6B73E212B083E5700A31C9F /* IGIdenticon */; };
+		E6B73E242B0842CB00A31C9F /* AccountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E232B0842CB00A31C9F /* AccountData.swift */; };
+		E6B73E282B08457C00A31C9F /* AccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E272B08457C00A31C9F /* AccountInput.swift */; };
+		E6B73E2A2B08484D00A31C9F /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E292B08484D00A31C9F /* EmailVerificationView.swift */; };
+		E6B73E2C2B084B9B00A31C9F /* PhoneVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E2B2B084B9B00A31C9F /* PhoneVerificationView.swift */; };
+		E6B73E2E2B084BAE00A31C9F /* KYCVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E2D2B084BAE00A31C9F /* KYCVerificationView.swift */; };
+		E6B73E302B084BC700A31C9F /* TwitterVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E2F2B084BC700A31C9F /* TwitterVerificationView.swift */; };
+		E6B73E322B084BD500A31C9F /* GithubVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B73E312B084BD500A31C9F /* GithubVerificationView.swift */; };
 		E6E393242B07E97400D7A1BB /* mobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E393232B07E97400D7A1BB /* mobileApp.swift */; };
 		E6E393262B07E97400D7A1BB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E393252B07E97400D7A1BB /* ContentView.swift */; };
 		E6E393282B07E97500D7A1BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6E393272B07E97500D7A1BB /* Assets.xcassets */; };
@@ -50,17 +54,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E6B73DF62B0826F600A31C9F /* KYCInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCInput.swift; sourceTree = "<group>"; };
 		E6B73DF82B0827D700A31C9F /* MyDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataView.swift; sourceTree = "<group>"; };
-		E6B73DFA2B0827F500A31C9F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E6B73DFF2B0828EE00A31C9F /* HealthRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRecord.swift; sourceTree = "<group>"; };
 		E6B73E062B082C8700A31C9F /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		E6B73E082B082CAE00A31C9F /* AleoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AleoManager.swift; sourceTree = "<group>"; };
-		E6B73E0A2B082CC200A31C9F /* ShareRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRequest.swift; sourceTree = "<group>"; };
-		E6B73E0C2B082FE300A31C9F /* RequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestView.swift; sourceTree = "<group>"; };
 		E6B73E0E2B08300200A31C9F /* SignatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureView.swift; sourceTree = "<group>"; };
 		E6B73E172B08315E00A31C9F /* KYCRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCRecord.swift; sourceTree = "<group>"; };
 		E6B73E1B2B08334700A31C9F /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		E6B73E232B0842CB00A31C9F /* AccountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountData.swift; sourceTree = "<group>"; };
+		E6B73E272B08457C00A31C9F /* AccountInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInput.swift; sourceTree = "<group>"; };
+		E6B73E292B08484D00A31C9F /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
+		E6B73E2B2B084B9B00A31C9F /* PhoneVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationView.swift; sourceTree = "<group>"; };
+		E6B73E2D2B084BAE00A31C9F /* KYCVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCVerificationView.swift; sourceTree = "<group>"; };
+		E6B73E2F2B084BC700A31C9F /* TwitterVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterVerificationView.swift; sourceTree = "<group>"; };
+		E6B73E312B084BD500A31C9F /* GithubVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubVerificationView.swift; sourceTree = "<group>"; };
 		E6E393202B07E97400D7A1BB /* mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E393232B07E97400D7A1BB /* mobileApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobileApp.swift; sourceTree = "<group>"; };
 		E6E393252B07E97400D7A1BB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +87,7 @@
 			files = (
 				E6B73E162B08312E00A31C9F /* SimpleCodableClient in Frameworks */,
 				E6B73E042B08295F00A31C9F /* SwiftCloud in Frameworks */,
+				E6B73E222B083E5700A31C9F /* IGIdenticon in Frameworks */,
 				E6B73E142B08312E00A31C9F /* SimpleCodable in Frameworks */,
 				E6B73E112B08301A00A31C9F /* Aleo in Frameworks */,
 				E6B73DFE2B0828C700A31C9F /* SwiftDate in Frameworks */,
@@ -128,19 +136,22 @@
 			children = (
 				E6E393232B07E97400D7A1BB /* mobileApp.swift */,
 				E6B73DF82B0827D700A31C9F /* MyDataView.swift */,
-				E6B73DFA2B0827F500A31C9F /* HomeView.swift */,
 				E6B73DFF2B0828EE00A31C9F /* HealthRecord.swift */,
 				E6B73E172B08315E00A31C9F /* KYCRecord.swift */,
 				E6E393252B07E97400D7A1BB /* ContentView.swift */,
 				E6B73E1B2B08334700A31C9F /* AccountView.swift */,
-				E6B73DF62B0826F600A31C9F /* KYCInput.swift */,
+				E6B73E232B0842CB00A31C9F /* AccountData.swift */,
+				E6B73E272B08457C00A31C9F /* AccountInput.swift */,
 				E6E393272B07E97500D7A1BB /* Assets.xcassets */,
 				E6E393292B07E97500D7A1BB /* Preview Content */,
 				E6B73E062B082C8700A31C9F /* LocalAuthenticator.swift */,
 				E6B73E082B082CAE00A31C9F /* AleoManager.swift */,
-				E6B73E0A2B082CC200A31C9F /* ShareRequest.swift */,
-				E6B73E0C2B082FE300A31C9F /* RequestView.swift */,
 				E6B73E0E2B08300200A31C9F /* SignatureView.swift */,
+				E6B73E292B08484D00A31C9F /* EmailVerificationView.swift */,
+				E6B73E2B2B084B9B00A31C9F /* PhoneVerificationView.swift */,
+				E6B73E2D2B084BAE00A31C9F /* KYCVerificationView.swift */,
+				E6B73E2F2B084BC700A31C9F /* TwitterVerificationView.swift */,
+				E6B73E312B084BD500A31C9F /* GithubVerificationView.swift */,
 			);
 			path = mobile;
 			sourceTree = "<group>";
@@ -192,6 +203,7 @@
 				E6B73E102B08301A00A31C9F /* Aleo */,
 				E6B73E132B08312E00A31C9F /* SimpleCodable */,
 				E6B73E152B08312E00A31C9F /* SimpleCodableClient */,
+				E6B73E212B083E5700A31C9F /* IGIdenticon */,
 			);
 			productName = mobile;
 			productReference = E6E393202B07E97400D7A1BB /* mobile.app */;
@@ -270,6 +282,7 @@
 				E6B73E022B08295F00A31C9F /* XCRemoteSwiftPackageReference "SwiftCloud" */,
 				E6B73E052B082BD100A31C9F /* XCRemoteSwiftPackageReference "aleo-swift" */,
 				E6B73E122B08312E00A31C9F /* XCRemoteSwiftPackageReference "SimpleCodableMacro" */,
+				E6B73E202B083E5700A31C9F /* XCRemoteSwiftPackageReference "IGIdenticon" */,
 			);
 			productRefGroup = E6E393212B07E97400D7A1BB /* Products */;
 			projectDirPath = "";
@@ -313,19 +326,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6B73E0D2B082FE300A31C9F /* RequestView.swift in Sources */,
+				E6B73E242B0842CB00A31C9F /* AccountData.swift in Sources */,
 				E6B73E092B082CAE00A31C9F /* AleoManager.swift in Sources */,
-				E6B73DF72B0826F600A31C9F /* KYCInput.swift in Sources */,
 				E6B73E072B082C8700A31C9F /* LocalAuthenticator.swift in Sources */,
 				E6B73E182B08315E00A31C9F /* KYCRecord.swift in Sources */,
 				E6E393262B07E97400D7A1BB /* ContentView.swift in Sources */,
 				E6B73E002B0828EE00A31C9F /* HealthRecord.swift in Sources */,
 				E6B73DF92B0827D700A31C9F /* MyDataView.swift in Sources */,
-				E6B73DFB2B0827F500A31C9F /* HomeView.swift in Sources */,
+				E6B73E322B084BD500A31C9F /* GithubVerificationView.swift in Sources */,
+				E6B73E282B08457C00A31C9F /* AccountInput.swift in Sources */,
+				E6B73E302B084BC700A31C9F /* TwitterVerificationView.swift in Sources */,
+				E6B73E2E2B084BAE00A31C9F /* KYCVerificationView.swift in Sources */,
 				E6B73E0F2B08300200A31C9F /* SignatureView.swift in Sources */,
-				E6B73E0B2B082CC200A31C9F /* ShareRequest.swift in Sources */,
+				E6B73E2A2B08484D00A31C9F /* EmailVerificationView.swift in Sources */,
 				E6B73E1C2B08334700A31C9F /* AccountView.swift in Sources */,
 				E6E393242B07E97400D7A1BB /* mobileApp.swift in Sources */,
+				E6B73E2C2B084B9B00A31C9F /* PhoneVerificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +701,14 @@
 				minimumVersion = 0.0.1;
 			};
 		};
+		E6B73E202B083E5700A31C9F /* XCRemoteSwiftPackageReference "IGIdenticon" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/seaburg/IGIdenticon.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -712,6 +736,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E6B73E122B08312E00A31C9F /* XCRemoteSwiftPackageReference "SimpleCodableMacro" */;
 			productName = SimpleCodableClient;
+		};
+		E6B73E212B083E5700A31C9F /* IGIdenticon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6B73E202B083E5700A31C9F /* XCRemoteSwiftPackageReference "IGIdenticon" */;
+			productName = IGIdenticon;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

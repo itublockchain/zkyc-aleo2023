@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "igidenticon",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/seaburg/IGIdenticon.git",
+      "state" : {
+        "revision" : "b4ad2b7e31924c5a18e018da795f3caf0b5309e2",
+        "version" : "0.8.0"
+      }
+    },
+    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",

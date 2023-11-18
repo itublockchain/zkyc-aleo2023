@@ -7,87 +7,100 @@
 
 import SwiftUI
 
-import SwiftData
+import SwiftDate
 
 struct MyDataView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var records: [HealthRecord]
-
+    
+    @Environment(AleoManager.self) var aleoManager
+    @Environment(AccountData.self) var accountData
+    
+    var name = "Jon"
+    
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(records) { record in
-                    NavigationLink {
-                        Text("Health Record at \(record.dateStamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(record.dateStamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        NavigationStack {
+            VStack {
+                Text("Welcome, \((accountData.account.address) ?? "Jon")")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding()
+                
+                NavigationLink(destination: EmailVerificationView()) {
+                    Text("Verify Email")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
                 }
-                .onDelete(perform: deleteItems)
+                
+                NavigationLink(destination: PhoneVerificationView()) {
+                    Text("Verify Phone Number")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
+                }
+                NavigationLink(destination: KYCVerificationView()) {
+                    Text("Verify KYC")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
+                }
+                NavigationLink(destination: TwitterVerificationView()) {
+                    Text("Verify Twitter")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
+                }
+                NavigationLink(destination: GithubVerificationView()) {
+                    Text("Verify Github")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
+                }
+               
+                NavigationLink(destination: SignatureView(signature: "asdf")) {
+                    Text("Generate ZK Proof")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 250, height: 40)
+                        .background(.green)
+                        .cornerRadius(10)
+                }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
         }
     }
-
-    private func addItem() {
+    
+    func deleteRequest(_ indexSet: IndexSet?) {
         
-        let diagnosis = Diagnosis(
-            conditionName: "Diabetes Type-2",
-            dateDiagnosed: Date(),
-            severity: "moderate"
-        )
-        
-        let medication = Medication(
-            name: "Insulin",
-            datePrescribed: Date(),
-            dosingSchedule: "weekly"
-        )
-        
-        let newItem = HealthRecord(
-            dateStamp: Date(),
-            name: "Jon Stewart",
-            diagnoses: [
-                diagnosis
-            ],
-            medications: [
-                medication
-            ],
-            dateOfBirth: Date(),
-            gender: "female",
-            ethnicity: "turkish"
-        )
-        
-        withAnimation {
-            modelContext.insert(
-                newItem
-            )
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(records[index])
-            }
-        }
     }
 }
 
 #Preview {
     MyDataView()
-        .modelContainer(for: [HealthRecord.self, Diagnosis.self, Medication.self], inMemory: true)
+        .modelContainer(for: [KYCRecord.self, PhoneNumber.self, Email.self, TwitterAccount.self, GithubAccount.self], inMemory: true)
         .environment(LocalAuthenticator())
         .environment(AleoManager())
+        .environment(AccountData())
 }
 
