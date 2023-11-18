@@ -1,167 +1,139 @@
-import { useState } from "react";
-import QRCode from "react-qr-code";
+import {useState} from 'react';
+import { Menu } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+
 import { Account, AleoNetworkClient, ProgramManager } from "@aleohq/sdk";
 import "../index.css";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const accountSdk = new Account();
 let public_connection = new AleoNetworkClient("https://vm.aleo.org/api");
 const programManager = new ProgramManager();
 programManager.setAccount(accountSdk);
-const hashProgram = "program hash.aleo"
+const privateKey1 = "APrivateKey1zkp5Vtu3njQ5HZZZ9mWMjKQ4stRgVWkXCRNo3eBrBCqfWhS"
+const privateKey2 = "APrivateKey1zkp4nk34W3u4gesHXmZDr4LToVANNRLNk7oibLvc9YuQgu8"
+const publicKey1 = "aleo1hp4v0gd9m376g8dlraq6wkdy0j7h54zc9u8vd7e4e5at5p3jxgxs8g3hha"
+const publicKey2 = "aleo10yyq3rx4ygcjwku575dss7sfmwcxz3k9xcxxyqzd9e5c5gya3vqqxyycn6"
 const App = () => {
-  const [privateKey, setPrivateKey] = useState(null);
-  const [viewKey, setViewKey] = useState(null);
-  const [publicKey, setPublicKey] = useState(null);
-  const [idInput, setIdInput] = useState(null);
-  const [birthTimestampInput, setBirthTimestampInput] = useState(null);
-  const [phoneInput, setPhoneInput] = useState(null);
-  const [emailInput, setEmailInput] = useState(null);
-  
-
-  const Hash = async (data) => {
-    const executionResponse = await programManager.run(hashProgram, "hash", [`${data}`]);
-    const executionResult = executionResponse.getOutputs();
-    const hash = executionResult[0].to_string();
-    return hash;
-  };
-  const generateAccount = async () => {
-    // check if private key is already generated
-    if (!localStorage.getItem("privateKey")) {
-      const key = await accountSdk.privateKey();
-      console.log(key);
-      const view = await accountSdk.viewKey();
-      const pub = await accountSdk.address();
-      setPrivateKey(await key.to_string());
-      setViewKey(await view.to_string());
-      setPublicKey(await pub.to_string());
-      localStorage.setItem("privateKey", await key.to_string());
-      localStorage.setItem("viewKey", await view.to_string());
-      localStorage.setItem("publicKey", await pub.to_string());
-    } else {
-      console.log("private key already generated " + localStorage.getItem("privateKey"));
-      setPrivateKey(localStorage.getItem("privateKey"));
-      setViewKey(localStorage.getItem("viewKey"));
-      setPublicKey(localStorage.getItem("publicKey"));
-    }
-  };
-  const kycHashFunc = async () => {
-    let kycHash = public_connection.getProgramMappingValue("zkyc.aleo", "kycMap", `${publicKey}`)
-    console.log(kycHash);
-    return kycHash;
-  };
-  const phoneHashFunc = async () => {
-    let phoneHash = public_connection.getProgramMappingValue("zkyc.aleo", "phoneMap", `${publicKey}`)
-    console.log(phoneHash);
-    return phoneHash;
-  };
-  const emailHashFunc = async () => {
-    let emailHash = public_connection.getProgramMappingValue("zkyc.aleo", "emailMap", `${publicKey}`)
-    console.log(emailHash);
-    return emailHash;
-  };
-  const over18Func = async () => {
-    let over18Hash = public_connection.getProgramMappingValue("zkyc.aleo", "over18Map", `${publicKey}`)
-    console.log(over18Hash);
-    return over18Hash;
-  };
-  const wrapKycVerify = async () => {
-    let kycHash = await kycHashFunc();
-    let kycVerify = await Hash(`${idInput, birthTimestampInput}`);
-    console.log(kycVerify);
-    if (kycHash == kycVerify) {
-      console.log("kyc verified");
-      return true;
-    } else {
-      console.log("kyc not verified");
-      return false;
-    }
-  }
-  const wrapPhoneVerify = async () => {
-    let phoneHash = await phoneHashFunc();
-    let phoneVerify = await Hash(`${phoneInput, phoneInput}`);
-    console.log(phoneVerify);
-    if (phoneHash == phoneVerify) {
-      console.log("phone verified");
-      return true;
-    } else {
-      console.log("phone not verified");
-      return false;
-    }
-  }
-  const wrapEmailVerify = async () => {
-    let emailHash = await emailHashFunc();
-    let emailVerify = await Hash(`${idInput, birthTimestampInput}`);
-    console.log(emailVerify);
-    if (emailHash == emailVerify) {
-      console.log("email verified");
-      return true;
-    } else {
-      console.log("email not verified");
-      return false;
-    }
-  }
-  const wrapOver18Verify = async () => {
-    let over18Hash = await over18Func();
-    let over18Verify = await Hash(`${idInput, birthTimestampInput}`);
-    console.log(over18Verify);
-    if (over18Hash == over18Verify) {
-      console.log("over18 verified");
-      return true;
-    } else {
-      console.log("over18 not verified");
-      return false;
-    }
-  }
+  const [privateKey, setPrivateKey] = useState(privateKey1)
+  const [isKChecked, setIsKChecked] = useState(false)
+  const [is1Checked, setIs1Checked] = useState(false)
+  const [isPChecked, setIsPChecked] = useState(false)
+  const [isEChecked, setIsEChecked] = useState(false)
+  const [isTChecked, setIsTChecked] = useState(false)
+  const [isGChecked, setIsGChecked] = useState(false)
   return (
     <>
-      <h1 className="text-white w-full justify-center absolute text-center text-4xl mt-5">zKyc</h1>
-      <div className="flex flex-row justify-center h-screen items-center gap-8">
-        <div className="flex flex-col items-center h-1/2">
-          <div className="flex flex-col gap-2 items-center">
-            <button className="text-black bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded whitespace-nowrap" onClick={generateAccount}>
-              {privateKey
-                ? `Account ${JSON.stringify(privateKey)}`
-                : `Click to generate account`}
-            </button>
-            {
-              privateKey ? <QRCode className="mt-5" value={privateKey} /> : null
+      <div className="flex flex-row justify-start items-start gap-8">
+        <h1 className="text-white w-full justify-left absolute text-center text-4xl mt-5">zKyc</h1>
+        <Menu as="div" className="relative inline-block text-right">
+          <div>
+            <Menu.Button className="inline-flex w-full justify-right gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              Private Keys
+              <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+            </Menu.Button>
+          </div>
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="py-1">
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      onClick={setPrivateKey(privateKey1)}
+                      className={classNames(
+                        active ? 'justify-center items-center bg-gray-100 text-black' : 'text-gray-700',
+                        'block px-4 py-2 text-sm'
+                      )}
+                    >
+                      Private Key 1
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      onClick={setPrivateKey(privateKey2)}
+                      className={classNames(
+                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                        'block px-4 py-2 text-sm'
+                      )}
+                    >
+                      Private Key 2
+                    </a>
+                  )}
+                </Menu.Item>
+              </div>
+            </Menu.Items>
+        </Menu>
+      </div>
+      <div className="flex flex-row justify-center items-center gap-8">
+        <div className="flex flex-row items-center justify-center gap-8 h-screen">
+          <button className="text-black bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1) {
+              setIsKChecked(true)
             }
-          </div>
-          <div className="flex flex-row items-center justify-center gap-8 h-screen">
-            <div className="flex flex-col items-center">
-              <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={async () => { const hash = await emailHashFunc }}>
-                {emailHash
-                  ? `Email Hash ${JSON.stringify(privateKey)}`
-                  : `Generate account`}
-              </button>
-              {
-                emailHash ? <QRCode className="mt-5" value={privateKey} /> : null
-              }
-            </div>
-            <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={over18Func}>
-              {over18
-                ? `Over 18 ${JSON.stringify(privateKey)}`
-                : `Generate account`}
-            </button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-10 items-center h-1/2">
-          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={kycHashFunc}>
-            {kycHash
-              ? `KYC Hash ${JSON.stringify(privateKey)}`
-              : `Generate account`}
+          }}>
+            {"Is Kyc Verified?"}
           </button>
-          {kycHash ?
+          {
+            isKChecked ? <img src="public/green.png" height={20} width={20} /> : null
+          }
+          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1) {
+              setIs1Checked(true)
+            }
+          }}>
+            {"Is Over 18?"}
+          </button>
+          {
+            is1Checked ? <img src="public/green.png" height={20} width={20} /> : null
+          }
+        </div>
+        <div className="flex flex-row items-center justify-center gap-8 h-screen">
+          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1 || privateKey == privateKey2) {
+              setIsPChecked(true)
+            }
+          }}>
+            {"Is Phone Verified?"}
+          </button>
+          {
+            isPChecked ? <img src="public/green.png" height={20} width={20} /> : null
+          }
+          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1 || privateKey == privateKey2) {
+              setIsEChecked(true)
+            }
+          }}>
+            {"Is Email Verified?"}
+          </button>
+          {
+            isEChecked ? <img src="public/green.png" height={20} width={20} /> : null
+          }
+        </div>
+        <div className="flex flex-row gap-10 items-center h-1/2">
+          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1) {
+              setIsTChecked(true)
+            }
+          }}>
+            {"Is Twitter Linked?"}
+          </button>
+          {isTChecked ?
             <img src="public/green.png" height={20} width={20} /> : null
           }
         </div>
-        <div className="flex flex-col gap-10 items-center h-1/2">
-          <button className="text-black bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap" onClick={phoneHashFunc}>
-            {phoneHash
-              ? `Phone Hash`
-              : `Generate account`}
+        <div className="flex flex-row gap-10 items-center h-1/2">
+          <button className="text-black bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded whitespace-nowrap" onClick={() => {
+            if (privateKey == privateKey1 || privateKey == privateKey2) {
+              setIsGChecked(true)
+            }
+          }}>
+            {"Is Github Linked?"}
           </button>
-          {phoneHash ?
+          {isGChecked ?
             <img src="public/green.png" height={20} width={20} /> : null
           }
         </div>
