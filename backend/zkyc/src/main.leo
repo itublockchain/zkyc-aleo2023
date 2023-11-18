@@ -407,7 +407,7 @@ program zkyc.aleo {
         private data4: u128,
         private data5: u128,
 
-    )-> Phone {
+    )-> Twitter {
         let twitter_sign: TwitterInfo = TwitterInfo {
             data1,
             data2,
